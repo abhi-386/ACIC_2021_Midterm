@@ -92,24 +92,6 @@ def organize_traits(traits, train_yield):
     trait_df['Yield'] = yield_df['Yield']
     return trait_df.reset_index().rename(columns={'index':'Performance Record'})
 
-# def organize_yield(train_yield):
-#     yield_df = pd.DataFrame(train_yield)
-#     yield_df.rename(columns = {0:'Yield'}, inplace = True)
-
-# def merge_traits():
-#     yield_df = organize_yield(train_yield)
-#     traits_df = organize_traits(train_yield)
-#     traits_df['Yield'] = yield_df['Yield']
-#     return trait_df.reset_index().rename(columns={'index':'Performance Record'})
-
-# def expand_and_merge():
-#     merge_traits_df = merge_traits()
-#     weather_df = organize_weather()
-#     expanded_df = pd.concat([merge_traits_df]*214)
-#     expanded_df = expanded_df.sort_values(by = 'Performance Record')
-#     final_df = weather_df.merge(expanded_df, on = 'Performance Record')
-#     return final_df
-
 #----------------------------------
 
 def main():
