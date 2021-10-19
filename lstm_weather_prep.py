@@ -12,6 +12,8 @@ from sklearn.preprocessing import MinMaxScaler
 from matplotlib import pyplot
 import datetime
 import pandas as pd
+import scipy
+from scipy import stats
 
 
 # convert series to supervised learning
@@ -39,11 +41,11 @@ def series_to_supervised(data, n_in=1, n_out=1, dropnan=True):
 	return agg
 
 # load dataset
-dataset = read_csv('weather_short.csv', header=0, index_col=0)
+dataset = read_csv('avg_performance_record.csv', header=0, index_col=0)
 
 ## ADDED IN BY SEB TO GET THE DATASET PREP TO WORK ##
-dataset['date'] = pd.to_datetime(dataset['date'], format = '%m-%d') #***************************************************************************************************************
-dataset['date'] = dataset['date'].dt.strftime('%m%d') #*****************************************************************************************************************************
+#dataset['date'] = pd.to_datetime(dataset['date'], format = '%m-%d') #***************************************************************************************************************
+#dataset['date'] = dataset['date'].dt.strftime('%m%d') #*****************************************************************************************************************************
 
 values = dataset.values
 # integer encode direction
@@ -57,14 +59,14 @@ scaled = scaler.fit_transform(values)
 # frame as supervised learning
 reframed = series_to_supervised(scaled, 1, 1)
 # drop columns we don't want to predict
-#reframed.drop(reframed.columns[[9,10,11,12,13,14,15]], axis=1, inplace=True)
+reframed.drop(reframed.columns[[9, 10, 11, 12, 13, 14, 15, 16]], axis=1, inplace=True)
 print(reframed.head())
 
 
 
 # split into train and test sets
 values = reframed.values
-n_train_hours = 365 * 24
+n_train_hours = 30000
 train = values[:n_train_hours, :]
 test = values[n_train_hours:, :]
 # split into input and outputs
@@ -79,20 +81,26 @@ print(train_X.shape, train_y.shape, test_X.shape, test_y.shape)
 
 # design network
 model = Sequential()
-model.add(LSTM(50, input_shape=(train_X.shape[1], train_X.shape[2]))) #********************************************************************************************
+model.add(LSTM(25, input_shape=(train_X.shape[1], train_X.shape[2]))) #********************************************************************************************
 model.add(Dense(1))
 model.compile(loss='mae', optimizer='adam')
 # fit network
-history = model.fit(train_X, train_y, epochs=50, batch_size=50, validation_data=(test_X, test_y), verbose=2, shuffle=False) #********************************************************
-# plot history
-# pyplot.plot(history.history['loss'], label='train')
-# pyplot.plot(history.history['val_loss'], label='test')
-# pyplot.legend()
-# pyplot.show()
+history = model.fit(train_X, train_y, epochs=25, batch_size=72, validation_data=(test_X, test_y), verbose=2, shuffle=False) #********************************************************
+#plot history
+pyplot.plot(history.history['loss'], label='train')
+pyplot.plot(history.history['val_loss'], label='test')
+pyplot.legend()
+pyplot.show()
+
+def rsquared(x, y):
+    """ Return R^2 where x and y are array-like."""
+
+    slope, intercept, r_value, p_value, std_err = scipy.stats.linregress(x, y)
+    return r_value**2
 
 
 # make a prediction
-yhat = model.predict(test_X, verbose = 0) #******************************************************************************************************************************************
+yhat = model.predict(test_X) #******************************************************************************************************************************************
 test_X = test_X.reshape((test_X.shape[0], test_X.shape[2]))
 # invert scaling for forecast
 inv_yhat = concatenate((yhat, test_X[:, 1:]), axis=1)
@@ -105,4 +113,5 @@ inv_y = scaler.inverse_transform(inv_y)
 inv_y = inv_y[:,0]
 # calculate RMSE
 rmse = sqrt(mean_squared_error(inv_y, inv_yhat))
-print('Test RMSE: %.3f' % rmse)
+r2 = rsquared(inv_y, inv_yhat)
+print('Test RMSE: %.3f' % rmse, 'r-squared: %.6f' % r2)

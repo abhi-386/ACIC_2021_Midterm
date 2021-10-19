@@ -4,6 +4,10 @@ import pandas as pd
 import numpy as np
 import datetime
 from itertools import cycle
+import seaborn as sns
+import matplotlib.pyplot as plt
+import matplotlib.ticker as ticker
+import matplotlib.dates as mdates
 import argparse
 import os
 #------------------------------------------
@@ -14,6 +18,9 @@ def get_args():
         description='Individual plant temperature extraction',
         formatter_class=argparse.ArgumentDefaultsHelpFormatter)
 
+    # parser.add_argument('dir',
+    #                     metavar='dir',
+    #                     help='Directory containing geoTIFFs')
 
     parser.add_argument('-w',
                         '--weather_data',
@@ -92,6 +99,24 @@ def organize_traits(traits, train_yield):
     trait_df['Yield'] = yield_df['Yield']
     return trait_df.reset_index().rename(columns={'index':'Performance Record'})
 
+# def organize_yield(train_yield):
+#     yield_df = pd.DataFrame(train_yield)
+#     yield_df.rename(columns = {0:'Yield'}, inplace = True)
+
+# def merge_traits():
+#     yield_df = organize_yield(train_yield)
+#     traits_df = organize_traits(train_yield)
+#     traits_df['Yield'] = yield_df['Yield']
+#     return trait_df.reset_index().rename(columns={'index':'Performance Record'})
+
+# def expand_and_merge():
+#     merge_traits_df = merge_traits()
+#     weather_df = organize_weather()
+#     expanded_df = pd.concat([merge_traits_df]*214)
+#     expanded_df = expanded_df.sort_values(by = 'Performance Record')
+#     final_df = weather_df.merge(expanded_df, on = 'Performance Record')
+#     return final_df
+
 #----------------------------------
 
 def main():
@@ -112,11 +137,22 @@ def main():
     expanded_df = expanded_df.sort_values(by = 'Performance Record')
     print('** Data Organized **')
 
-    final_df = out_df.merge(expanded_df, on = 'Performance Record')
-    out_df.to_csv(os.path.join(args.outdir, 'weather_data.csv'))
-    expanded_df.to_csv(os.path.join(args.outdir, 'other_data.csv'))
-    
+    n = 200000  #chunk row size
+    list_df = [expanded_df[i:i+n] for i in range(0, expanded_df.shape[0],n)]
+
+    res = pd.DataFrame() 
+
+    for chunk in list_df:
+        res = pd.concat([res, out_df.merge(chunk, on = 'Performance Record')]) 
+
+    print('** Data split into chunks and merged **')
+
+    #final_df = out_df.merge(expanded_df, on = 'Performance Record')
+    #out_df.to_csv(os.path.join(args.outdir, 'weather_data.csv'))
+    #expanded_df.to_csv(os.path.join(args.outdir, 'other_data.csv'))
     #final_df.to_csv(os.path.join(args.outdir, 'prepared_data.csv'))
+
+    res.to_csv(os.path.join(args.outdir, 'prepared_data.csv'))
     print(f'Done, see outputs in ./{args.outdir}.')
 
 #----------------------------------
