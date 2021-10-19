@@ -11,13 +11,9 @@ Team name: Cyber Crop-Bots
 Team members, Sebastian Calleja, Nik Pearce, Hayden Payne, Abhishek Agarwal, and Melanie Grudinschi
 
 The following resources were used in building the model:
-
 Background paper from competition: https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0252402#sec019
-
 GitHub repository from authors of above paper: https://github.com/tryambakganguly/Yield-Prediction-Temporal-Attention
-
 Tutorial on multivariate time series forcasting with LSTM models: https://machinelearningmastery.com/multivariate-time-series-forecasting-lstms-keras/
-
 
 Guide to this repository:
 - data_prep.py is code written to prepare and format the raw weather, trait, and yield data (see Data folder and dataset information below) so it can be used for the model
