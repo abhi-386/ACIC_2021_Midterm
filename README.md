@@ -28,7 +28,7 @@ Guide to this repository:
     - Dataset_Competition.zip was provided by the competition (see Information on datasets below) and contains all raw data used in this code
     - Description.txt describes the datasets used (see also Information on datasets below)
     - avg_performance_record.csv (created from inputs_weather_train.npy) groups all weather data by performance record and averages annual values for weather variables
-    - traait_df.csv (created from inputs_others_train.npy and yield_trin.npy) organizes the numpy array into a datafraame and adds a column for yield to the rest of the others_train dataset
+    - trait_df.csv (created from inputs_others_train.npy and yield_train.npy) organizes the numpy array into a dataframe and adds a column for yield to the rest of the others_train dataset
     - weather_short.csv is a shortened version of input_weather_train.npy that only includes values with performance record '0' for the purpose of easier testing
 
 Information on datasets:
