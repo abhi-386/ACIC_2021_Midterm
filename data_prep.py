@@ -110,7 +110,6 @@ def organize_traits(traits, train_yield, cluster_IDs):
     num_genos = len(clusterID)
     cluster_dict = {}
     for i in range(1, num_genos):
-      array_index = i-1
       cID = clusterID[i-1]
       cluster_dict.update({i:cID})
     cluster_list = []
