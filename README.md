@@ -23,10 +23,12 @@ Tutorial on multivariate time series forcasting with LSTM models: https://machin
 Guide to this repository:
 - data_prep.py is code written to prepare and format the raw weather, trait, and yield data (see Data folder and dataset information below) so it can be used for the model
 - lstm_weather_prep.py is code written to build an LSTM model using a converted supervised time series of weather data, use the model to make predictions of crop yield from a test set of data, and evaluate the predictions based on the criteria of root mean squared error (RMSE).
+- lstm_traits_prep.py is code written to build an LSTM model using a converted supervised time series of trait data, use the model to make predictions of crop yield from a test set of data, and evaluate the predictions based on the criteria of root mean squared error (RMSE).
 - Data folder 
     - Dataset_Competition.zip was provided by the competition (see Information on datasets below) and contains all raw data used in this code
     - Description.txt describes the datasets used (see also Information on datasets below)
     - avg_performance_record.csv (created from inputs_weather_train.npy) groups all weather data by performance record and averages annual values for weather variables
+    - traait_df.csv (created from inputs_others_train.npy and yield_trin.npy) organizes the numpy array into a datafraame and adds a column for yield to the rest of the others_train dataset
     - weather_short.csv is a shortened version of input_weather_train.npy that only includes values with performance record '0' for the purpose of easier testing
 
 Information on datasets:
