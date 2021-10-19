@@ -1,8 +1,8 @@
-Data necessary to run our code
-The data is split into three main categories.  There is training data, test data, and genotoype cluster data.  The training and test data both consist of crop statistics and crop information.  The training data son
+This data is necessary to run our code.
+The data is split into three main categories.  There is training data, test data, and genotoype cluster data.  The training and test data both consist of crop statistics and crop information.  The training data has 93,028 performance records from 214 daily records across a 30 km grid.  The test data has 10,337 performance records.  
 
 The crop statistics include the Average Direct Normal Irradiance (ADNI), Average Precipitation (AP), Average Relative Humidity (ARH), Maximum Direct Normal Irradiance (MDNI), Maximum Surface Temperature (MaxSur), Minimum Surface Temperature (MinSur), and Average Surface Temperature (AvgSur).
 
 The crop information includes Maturity, Genotype ID, State, Year, and Location.
 
-The training data is used to train and build a model to analyze the crop peformance yield value. The testing data is used to test the model accuracy.
+The training data was used to train and build the model to analyze the crop peformance yield value. The testing data is used to test the model accuracy.
