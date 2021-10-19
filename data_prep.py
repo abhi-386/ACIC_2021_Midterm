@@ -37,6 +37,14 @@ def get_args():
                         type=str,
                         default=None,
                         required=True)
+    
+    parser.add_argument('-c',
+                        '--cluster_data',
+                        help='Numpy array containing the cluster ID data',
+                        metavar='cluster_data',
+                        type=str,
+                        default=None,
+                        required=True)
 
     parser.add_argument('-y',
                         '--yield_data',
@@ -88,7 +96,7 @@ def organize_weather(weather):
     out_df['date'] = [next(date_cycle) for cycle in range(len(out_df))]
     return out_df
 
-def organize_traits(traits, train_yield):
+def organize_traits(traits, train_yield, cluster_IDs):
     trait_df = pd.DataFrame(traits, columns=['Maturity Group', 'Genotype ID', 'State', 'Year', 'Location'])
     trait_df['Year'] = pd.to_numeric(trait_df['Year'])
     trait_df['Genotype ID'] = pd.to_numeric(trait_df['Genotype ID'])
@@ -97,6 +105,21 @@ def organize_traits(traits, train_yield):
     yield_df = pd.DataFrame(train_yield)
     yield_df.rename(columns = {0:'Yield'}, inplace = True)
     trait_df['Yield'] = yield_df['Yield']
+    
+    # Add cluster IDs to trait dataframe
+    num_genos = len(clusterID)
+    cluster_dict = {}
+    for i in range(1, num_genos):
+      array_index = i-1
+      cID = clusterID[i-1]
+      cluster_dict.update({i:cID})
+    cluster_list = []
+    for i in trait_df.index:
+      genotype = trait_df.iloc[i]['Genotype ID']
+      cluster = cluster_dict.get(genotype)
+      cluster_list.append(cluster)
+    trait_df['Cluster'] = cluster_list 
+    
     return trait_df.reset_index().rename(columns={'index':'Performance Record'})
 
 # def organize_yield(train_yield):
@@ -123,12 +146,14 @@ def main():
     args = get_args()
 
     weather = np.load(args.weather_data)
+    cluster_IDs = np.load(args.cluster_data)
     traits = np.load(args.trait_data)
+    
     train_yield = np.load(args.yield_data)
     print('** Data Downloaded **')
 
     out_df = organize_weather(weather)
-    trait_df = organize_traits(traits, train_yield)
+    trait_df = organize_traits(traits, train_yield, cluster_IDs)
     #yield_df = organize_yield(train_yield)
 
     #trait_df = merge_traits()
