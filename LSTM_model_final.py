@@ -110,7 +110,6 @@ def main():
 
     big_csv = big_csv.set_index('Performance Record')
 
-    # Subsetting csv to input and output
     #dataset = read_csv('LSTM_Model/avg_performance_record.csv', header=0, index_col=0)
     dataset = big_csv
     input_df = dataset[dataset.columns[:-1]]
@@ -122,7 +121,7 @@ def main():
 
     # Encoding the Sate Column
     encoder = LabelEncoder()
-    values_input[:,9] = encoder.fit_transform(values_input[:,9])
+    values_input[:,5] = encoder.fit_transform(values_input[:,5])
 
     # Convert values to floats
     values_input = values_input.astype('float32')
@@ -138,8 +137,8 @@ def main():
     reframed_output = series_to_supervised(scaled_output, 1, 1)
 
     # drop columns we don't want to predict (keeping Yield in this case)
-    #reframed_input.drop(reframed_input.columns[[8, 9, 10, 11, 12, 13, 14, 15]], axis=1, inplace=True)
-    reframed_input.drop(reframed_input.columns[[12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23]], axis=1, inplace=True)
+    reframed_input.drop(reframed_input.columns[[8, 9, 10, 11, 12, 13, 14, 15]], axis=1, inplace=True)
+    #reframed_input.drop(reframed_input.columns[[12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23]], axis=1, inplace=True)
     print(reframed_input.head())
 
     ## Define Input and Output values
@@ -152,8 +151,8 @@ def main():
     # Apply train and validation split for input and output
     train_input = values_input[:n_train_hours, :]
     train_output = values_output[:n_train_hours, :]
-    validation_input = values_input[n_train_hours:, :]
-    validation_output = values_output[n_train_hours:, :]
+    validation_input = values_input[n_train_hours:int(len(values_input)), :]
+    validation_output = values_output[n_train_hours:int(len(values_input)), :]
 
     # assign split into input and outputs that make a little more sense
     train_X, train_y = train_input, train_output
@@ -170,7 +169,7 @@ def main():
     model.add(Dense(1))
     model.compile(loss='mae', optimizer='adam')
     # fit network
-    history = model.fit(train_X, train_y, epochs=35, batch_size=700, validation_data=(validation_X, validation_y), verbose=2, shuffle=False)
+    history = model.fit(train_X, train_y, epochs=35, batch_size=300, validation_data=(validation_X, validation_y), verbose=2, shuffle=False)
     #plot history
     pyplot.plot(history.history['loss'], label='train')
     pyplot.plot(history.history['val_loss'], label='validation')
