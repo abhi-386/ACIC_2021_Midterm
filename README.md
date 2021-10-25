@@ -24,7 +24,10 @@ Guide to this repository:
 - data_prep.py is code written to prepare and format the raw weather, trait, and yield data (see Data folder and dataset information below) so it can be used for the model
 - lstm_weather_prep.py is code written to build an LSTM model using a converted supervised time series of weather data, use the model to make predictions of crop yield from a test set of data, and evaluate the predictions based on the criteria of root mean squared error (RMSE).
 - lstm_traits_prep.py is code written to build an LSTM model using a converted supervised time series of trait data, use the model to make predictions of crop yield from a test set of data, and evaluate the predictions based on the criteria of root mean squared error (RMSE).
-- Final_data.ipynb is a Jupyter Notebook that structures a final data set in csv form from the various npy files as input.
+-Notebooks folder
+    - Data_Variable_Exploration is a Jupyter Notebook that reads in the data from npy files as input, displays a few summaries of the data as plots, and finally explores the relationship between some of the important yet overlooked trait variables
+    - Final_data.ipynb is a Jupyter Notebook that structures a final data set in csv form from the various npy files as input
+    - Testing_Model.ipynb is a Jupyter Notebook used to test the model with smaller versions of the final large dataset
 - Data folder 
     - Dataset_Competition.zip was provided by the competition (see Information on datasets below) and contains all raw data used in this code
     - Description.txt describes the datasets used (see also Information on datasets below)
