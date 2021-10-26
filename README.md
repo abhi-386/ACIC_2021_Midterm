@@ -26,8 +26,9 @@ Guide to this repository:
 - lstm_traits_prep.py is code written to build an LSTM model using a converted supervised time series of trait data, use the model to make predictions of crop yield from a test set of data, and evaluate the predictions based on the criteria of root mean squared error (RMSE).
 - Notebooks folder
     - Data_Variable_Exploration is a Jupyter Notebook that reads in the data from npy files as input, displays a few summaries of the data as plots, and finally explores the relationship between some of the important yet overlooked trait variables
-    - Final_data.ipynb is a Jupyter Notebook that structures a final data set in csv form from the various npy files as input
+    - Final_data_prep.ipynb is a Jupyter Notebook that structures a final data set in csv form from the various npy files as input
     - Testing_Model.ipynb is a Jupyter Notebook used to test the model with smaller versions of the final large dataset
+    - test_data_prep.ipynb is a Jupyter Notebook that structures a data set from input files for testing, as provided by the competition
 - Data folder 
     - Dataset_Competition.zip was provided by the competition (see Information on datasets below) and contains all raw data used in this code
     - Description.txt describes the datasets used (see also Information on datasets below)
