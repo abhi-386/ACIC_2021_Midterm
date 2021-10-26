@@ -1,0 +1,5 @@
+unit = 100
+epochs = 35
+batch_size = 300
+dropout = none
+shuffle = False
