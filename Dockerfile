@@ -9,7 +9,7 @@ RUN apt-get update
 RUN apt-get install -y python3.8-dev \
                        python3-pip \
                        wget \
-                       libgdal-dev \
+                       libgdal-dev
 
 RUN apt-get update
 RUN pip3 install --upgrade pip
