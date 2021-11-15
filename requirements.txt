@@ -1,6 +1,5 @@
 pandas==1.1.5
 numpy==1.19.5
-itertools==8.4.0
 seaborn==0.11.2
 matplotlib==3.3.4
 sklearn==0.0
